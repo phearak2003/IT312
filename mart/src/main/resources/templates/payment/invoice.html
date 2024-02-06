@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <link rel="shortcut icon" href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" type="image/x-icon" />
+
+    <link th:href="@{/css/product/invoice.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css" />
+</head>
+
+<body>
+    <section class="actions">
+        <a th:href="@{/product}" class="button" style="background-color: red">Back</a>
+        <a href="#" class="button" type="button" style="background-color: rgb(0, 183, 255);" onclick="print()">Print</a>
+        <a href="#" id="submit" class="button" style="background-color: rgb(0, 238, 255)">Submit</a>
+    </section>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" style="width: 100%; max-width: 80px" />
+                            </td>
+
+                            <td class="detail">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=s" style="width: 70px" alt="" />
+                                <input class="invoice_id" type="text" disabled /> <br />Date:
+                                <input class="date" type="text" disabled /> <br />Customer
+                                Name: <b><input class="customer" type="text" /></b>
+                                <br />Cashier: <input class="cashier" type="text" disabled />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="information">
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td>
+                                Mini Mart.<br />
+                                Phnom Penh<br />
+                                Kampuchea Krom Bvl
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>Item</td>
+
+                <td>Unit Price</td>
+
+                <td>Quantity</td>
+
+                <td>Total</td>
+            </tr>
+
+            <tr class="item">
+                <td>
+                    <input class="product" value="" />
+                </td>
+
+                <td>$ <input class="price" type="number" value="" /></td>
+
+                <td>
+                    <input class="quantity" type="number" value="" min="1" />
+                </td>
+
+                <td>
+                    <span class="total">$ 00.00</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <button class="btn-add-row">Add row</button>
+                </td>
+            </tr>
+
+            <tr class="total">
+                <td colspan="3"></td>
+                <td>Grand Total: $ 00.00</td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.3.1114/js/kendo.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function getCurrentDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0");
+            const day = String(now.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+
+        $(".date").val(getCurrentDate());
+        if (!sessionStorage.getItem("username")) {
+            window.location.href = "/account/login";
+        }
+        $(".cashier").val(sessionStorage.getItem("username"));
+
+        var products = $(".product")
+            .kendoDropDownList({
+                optionLabel: "Select product...",
+                dataTextField: "productName",
+                dataValueField: "id",
+                dataSource: [],
+            })
+            .data("kendoDropDownList");
+
+        $(".product").on("change", function () {
+            var currentRow = $(this).closest("tr");
+            var productDropdown = currentRow
+                .find(".product")
+                .data("kendoDropDownList");
+            let product = products.value();
+            $.ajax({
+                url: "http://localhost:8888/api/product/price/" + product,
+                method: "GET",
+                success: function (data) {
+                    currentRow.find(".price").val(data[0].id);
+                    currentRow.find(".quantity").val("");
+                },
+                error: function () { },
+            });
+            $.ajax({
+                url: "http://localhost:8888/api/product/quantity/" + product,
+                method: "GET",
+                success: function (data) {
+                    var maxQuantity = data[0].id;
+
+                    if (maxQuantity == 0) {
+                        var quantityTd = currentRow.find(".quantity").parent();
+                        var outOfStockSpan = quantityTd.find(".out-of-stock");
+                        if (outOfStockSpan.length === 0) {
+                            outOfStockSpan = $("<span>")
+                                .addClass("out-of-stock")
+                                .text("Out of stock")
+                                .css("color", "red");
+                            quantityTd.append(outOfStockSpan);
+                        } else {
+                            outOfStockSpan.show();
+                        }
+                        currentRow.find(".quantity").hide();
+                    } else {
+                        currentRow.find(".quantity").attr("max", maxQuantity).show();
+                        currentRow.find(".quantity").attr("placeholder", "1-" + maxQuantity).show();
+                        currentRow
+                            .find(".quantity")
+                            .parent()
+                            .find(".out-of-stock")
+                            .hide();
+                    }
+                },
+                error: function () {
+                },
+            });
+        });
+
+        $.ajax({
+            url: "http://localhost:8888/api/products",
+            method: "GET",
+            success: function (data) {
+                products.setDataSource(data);
+            },
+            error: function () { },
+        });
+
+        $("#submit").on("click", function (e) {
+            e.preventDefault();
+            var jsonData = [];
+            var customerName = $(".customer").val();
+            if (!customerName.trim()) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Please enter customer name",
+                    showCancelButton: false,
+                    confirmButtonText: "OK",
+                });
+                return;
+            }
+            var valid = true;
+            $("tr.item").each(function () {
+                var rowValues = [];
+                var $this = $(this);
+                $this.find("input, span").each(function () {
+                    var value = $(this).val();
+                    if (value) {
+                        rowValues.push(value);
+                    }
+                });
+                var productName = rowValues[0];
+                var quantity = parseInt(rowValues[2]);
+                var unitPrice = parseFloat(rowValues[1]);
+                var total = unitPrice * quantity;
+                var productID = products.dataSource
+                    .data()
+                    .find((p) => p.productName === productName).id;
+
+                $.ajax({
+                    url: "http://localhost:8888/api/product/quantity/" + productID,
+                    method: "GET",
+                    async: false,
+                    success: function (data) {
+                        var maxQuantity = data[0].id;
+                        if (maxQuantity < quantity) {
+                            Swal.fire({
+                                icon: "error",
+                                title: `Insufficient quantity for ${productName}`,
+                                showCancelButton: false,
+                                confirmButtonText: "OK",
+                            });
+                            valid = false;
+                            return false;
+                        }
+                    },
+                    error: function () {
+                    },
+                });
+
+                if (!valid) return false;
+
+                var payment = {
+                    productName: productName,
+                    quantity: quantity,
+                    unitPrice: unitPrice,
+                    total: total,
+                    cashier: sessionStorage.getItem("username"),
+                    customerName: $(".customer").val(),
+                };
+                jsonData.push(payment);
+            });
+
+            if (valid) {
+                $.ajax({
+                    type: "POST",
+                    url: "/product/payment/save",
+                    contentType: "application/json",
+                    data: JSON.stringify(jsonData),
+                    success: function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: response,
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/product";
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: xhr.responseText,
+                            showCancelButton: false,
+                            confirmButtonText: "Back to List",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/product";
+                            }
+                        });
+                    },
+                });
+            }
+        });
+
+        $("table").on("mouseup keyup", "input[type=number]", () =>
+            calculateTotals()
+        );
+
+        $(".btn-add-row").on("click", () => {
+            const $lastRow = $(".item:last");
+            const $newRow = $lastRow.clone();
+
+            $newRow.find("input").val("");
+            $newRow.find("td:last").text("$0.00");
+            $newRow.insertAfter($lastRow);
+            const newProductInput = $newRow.find(".product");
+
+            $.ajax({
+                url: "http://localhost:8888/api/products",
+                method: "GET",
+                success: function (data) {
+                    newProductInput.kendoDropDownList({
+                        optionLabel: "Select product...",
+                        dataTextField: "productName",
+                        dataValueField: "id",
+                        dataSource: data,
+                    });
+
+                    newProductInput.on("change", function () {
+                        var currentRow = $(this).closest("tr");
+                        var productDropdown = currentRow
+                            .find(".product")
+                            .find(".k-input-value-text");
+
+                        $.ajax({
+                            url:
+                                "http://localhost:8888/api/product/price/" +
+                                productDropdown.text(),
+                            method: "GET",
+                            success: function (data) {
+                                currentRow.find(".price").val(data[0].id);
+                                currentRow.find(".quantity").val("");
+                            },
+                            error: function () { },
+                        });
+                        $.ajax({
+                            url:
+                                "http://localhost:8888/api/product/quantity/" +
+                                productDropdown.text(),
+                            method: "GET",
+                            success: function (data) {
+                                var maxQuantity = data[0].id;
+
+                                if (maxQuantity == 0) {
+                                    var quantityTd = currentRow.find(".quantity").parent();
+                                    var outOfStockSpan = quantityTd.find(".out-of-stock");
+                                    if (outOfStockSpan.length === 0) {
+                                        outOfStockSpan = $("<span>")
+                                            .addClass("out-of-stock")
+                                            .text("Out of stock")
+                                            .css("color", "red");
+                                        quantityTd.append(outOfStockSpan);
+                                    } else {
+                                        outOfStockSpan.show();
+                                    }
+                                    currentRow.find(".quantity").hide();
+                                } else {
+                                    currentRow
+                                        .find(".quantity")
+                                        .attr("max", maxQuantity)
+                                        .show();
+                                    currentRow
+                                        .find(".quantity")
+                                        .parent()
+                                        .find(".out-of-stock")
+                                        .hide();
+                                }
+                            },
+                            error: function () { },
+                        });
+                    });
+                },
+                error: function () { },
+            });
+
+            newProductInput.focus();
+        });
+
+        function getData() {
+            var values = [];
+
+            $("tr.item").each(function () {
+                var rowValues = [];
+                $(this)
+                    .find("input, span")
+                    .each(function () {
+                        var value = $(this).val() || $(this).text();
+                        rowValues.push(value);
+                    });
+                values.push(rowValues);
+            });
+        }
+        getData();
+        calculateTotals();
+        function calculateTotals() {
+            const subtotals = $(".item")
+                .map((idx, val) => calculateSubtotal(val))
+                .get();
+            const total = subtotals.reduce((a, v) => a + Number(v), 0);
+            $(".total td:eq(1)").text(formatAsCurrency(total));
+        }
+
+        function calculateSubtotal(row) {
+            const $row = $(row);
+            const inputs = $row.find("input");
+            const subtotal = inputs[1].value * inputs[2].value;
+
+            $row.find("td:last").text(formatAsCurrency(subtotal));
+
+            return subtotal;
+        }
+
+        function formatAsCurrency(amount) {
+            return `$ ${Number(amount).toFixed(2)}`;
+        }
+
+        $(".quantity").on("keyup", function () {
+            if ($(this).closest("tr").find(".quantity").val() > $(this).closest("tr").find(".quantity").attr("max") || $(this).val() < 1) {
+                console.log($(this).closest("tr").find(".quantity").val())
+            }
+        });
+    </script>
+</body>
+
+</html>
