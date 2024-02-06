@@ -1,5 +1,5 @@
 # IT312
-#Query for MySQL
+# Query for MySQL
 
 CREATE DATABASE db_mart;
 
