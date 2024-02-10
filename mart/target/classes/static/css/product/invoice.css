@@ -5,6 +5,9 @@
     .actions {
         display: none !important;
     }
+    .btn-add-row{
+        display: none;
+    }
 }
 
 body {
