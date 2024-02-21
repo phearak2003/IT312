@@ -1,95 +1,181 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>List User</title>
-    <link rel="shortcut icon" href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
+      type="image/x-icon"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    />
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
 
     <link th:href="@{/css/product/style.css}" rel="stylesheet" />
-</head>
+  </head>
 
-<body>
+  <body>
     <header role="banner">
-        <h1>Mini Mart</h1>
-        <ul class="utilities">
-            <br>
-            <li><span id="greeting"></span></li>
-            <li class="logout warn"><a id="logout" href="#">Log Out</a></li>
-        </ul>
+      <h1>Mini Mart</h1>
+      <ul class="utilities">
+        <br />
+        <li><span id="greeting"></span></li>
+        <li class="logout warn"><a id="logout" href="#">Log Out</a></li>
+      </ul>
     </header>
 
+<<<<<<< Updated upstream
     <nav role='navigation'>
         <ul class="main">
             <li><a href="/product/payment/create"><i class="fa-solid fa-bag-shopping"></i> Payment</a></li>
             <li><a href="/product"><i class="fa-solid fa-warehouse"></i> Stock</a></li><li><a href="/product/soldproduct"><i class="fa-solid fa-clock-rotate-left"></i> Payment History</a></li>
             <li><a href="/account/users"><i class="fa-solid fa-user"></i> Manage User</a></li>
         </ul>
+=======
+    <nav role="navigation">
+      <ul class="main">
+        <li>
+          <a href="/product/payment/create"
+            ><i class="fa-solid fa-bag-shopping"></i> Payment</a
+          >
+        </li>
+        <li>
+          <a href="/product"><i class="fa-solid fa-warehouse"></i> Stock</a>
+        </li>
+        <li>
+          <a href="/product/soldproduct"
+            ><i class="fa-solid fa-warehouse"></i> Payment History
+          </a>
+        </li>
+        <li>
+          <a href="/account/users"
+            ><i class="fa-solid fa-user"></i> Manage User</a
+          >
+        </li>
+      </ul>
+>>>>>>> Stashed changes
     </nav>
     <main role="main">
-        <section class="panel important">
-            <div class="col-md-12">
-                <div class="d-flex justify-content-between m-3">
-                    <h2 class="fw-medium">User List</h2>
-                    <a class="btn btn-success" th:href="@{'/account/create'}"><i class="fa-solid fa-plus"></i> Add</a>
-                </div>
-                <table class="table table-hover text-center">
-                    <thead class="table table-dark">
-                        <td>ID</td>
-                        <td>Username</td>
-                        <td>Role</td>
-                        <td>Is Active</td>
-                        <td>Actions</td>
-                    </thead>
-                    <tbody>
-                        <tr th:each="user : ${users}">
-                            <td th:text="${user.id}" />
-                            <td th:text="${user.username}" />
-                            <td th:text="${user.role}" />
-                            <td th:text="${user.isActive}" />
-                            <td>
-                                <a th:href="@{'/account/user/detail/' + ${user.username}}" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></a>
-                                <a th:href="@{'/account/user/update/' + ${user.username}}" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                                <a th:href="@{'/account/user/delete/' + ${user.username}}" class="btn btn-sm btn-danger"><i class="fa fa-trash-can"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+      <section class="panel important">
+        <div class="col-md-12">
+          <div class="d-flex justify-content-between m-3">
+            <h2 class="fw-medium">User List</h2>
+            <div class="d-flex align-items-center">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search..."
+                onkeyup="searchUsers()"
+              />
+              <button class="btn btn-success ms-2" onclick="searchUsers()">
+                <i class="fas fa-search"></i>
+              </button>
+              <a class="btn btn-success ms-2" th:href="@{'/account/create'}"
+                ><i class="fa-solid fa-plus"></i> Add</a
+              >
             </div>
-        </section>
+          </div>
+          <table class="table table-hover text-center">
+            <thead class="table table-dark">
+              <td>ID</td>
+              <td>Username</td>
+              <td>Role</td>
+              <td>Is Active</td>
+              <td>Actions</td>
+            </thead>
+            <tbody id="userTableBody">
+              <tr th:each="user : ${users}">
+                <td th:text="${user.id}" />
+                <td th:text="${user.username}" />
+                <td th:text="${user.role}" />
+                <td th:text="${user.isActive}" />
+                <td>
+                  <a
+                    th:href="@{'/account/user/detail/' + ${user.username}}"
+                    class="btn btn-sm btn-success"
+                    ><i class="fa fa-eye"></i
+                  ></a>
+                  <a
+                    th:href="@{'/account/user/update/' + ${user.username}}"
+                    class="btn btn-sm btn-primary"
+                    ><i class="fa fa-pencil"></i
+                  ></a>
+                  <a
+                    th:href="@{'/account/user/delete/' + ${user.username}}"
+                    class="btn btn-sm btn-danger"
+                    ><i class="fa fa-trash-can"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).ready(function () {
-            if (!sessionStorage.getItem("username")) {
-                window.location.href = "/account/login";
+      $(document).ready(function () {
+        if (!sessionStorage.getItem("username")) {
+          window.location.href = "/account/login";
+        }
+        $("#greeting").text(
+          "Welcome back! " + sessionStorage.getItem("username")
+        );
+
+        $("#logout").on("click", function () {
+          Swal.fire({
+            icon: "info",
+            title: "Do you really want to log out?",
+            showCancelButton: true,
+            confirmButtonText: "Logout",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              sessionStorage.clear();
+              window.location.href = "/account/login";
             }
-            $("#greeting").text("Welcome back! " + sessionStorage.getItem("username"))
+          });
+        });
+      });
 
-            $("#logout").on("click", function () {
-                Swal.fire({
-                    icon: "info",
-                    title: "Do you really want to log out?",
-                    showCancelButton: true,
-                    confirmButtonText: "Logout"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        sessionStorage.clear();
-                        window.location.href = "/account/login";
-                    }
-                });
-            })
-        })
+      function searchUsers() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTableBody");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[1]; // Index 1 represents the Username column
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
     </script>
-</body>
-
+  </body>
 </html>

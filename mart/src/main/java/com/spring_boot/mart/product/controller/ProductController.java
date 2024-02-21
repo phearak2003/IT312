@@ -37,6 +37,7 @@ public class ProductController {
     public String payment() {
         return "payment/index";
     }
+    
 
     @GetMapping("/payment/create")
     public String createPayment() {

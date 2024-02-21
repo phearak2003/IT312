@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Invoice</title>
-    <link rel="shortcut icon" href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
+      type="image/x-icon"
+    />
 
     <link th:href="@{/css/product/invoice.css}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css"
+    />
+  </head>
 
-<body>
+  <body>
     <section class="actions">
-        <a th:href="@{/product}" class="button" style="background-color: red">Back</a>
-        <a href="#" class="button" type="button" style="background-color: rgb(0, 183, 255);" onclick="print()">Print</a>
-        <a href="#" id="submit" class="button" style="background-color: rgb(0, 238, 255)">Submit</a>
+      <a th:href="@{/product}" class="button" style="background-color: red"
+        >Back</a
+      >
+      <a
+        href="#"
+        class="button"
+        type="button"
+        style="background-color: rgb(0, 183, 255)"
+        onclick="print()"
+        >Print</a
+      >
+      <a
+        href="#"
+        id="submit"
+        class="button"
+        style="background-color: rgb(0, 238, 255)"
+        >Submit</a
+      >
     </section>
     <div class="invoice-box">
+<<<<<<< Updated upstream
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
                 <td colspan="4">
@@ -37,374 +59,397 @@
                             </td>
                         </tr>
                     </table>
+=======
+      <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+          <td colspan="4">
+            <table>
+              <tr>
+                <td class="title">
+                  <img
+                    src="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
+                    style="width: 100%; max-width: 80px"
+                  />
+>>>>>>> Stashed changes
                 </td>
-            </tr>
 
-            <tr class="information">
-                <td colspan="4">
-                    <table>
-                        <tr>
-                            <td>
-                                Mini Mart.<br />
-                                Phnom Penh<br />
-                                Kampuchea Krom Bvl
-                            </td>
-                        </tr>
-                    </table>
+                <td class="detail">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=s"
+                    style="width: 70px"
+                    alt=""
+                  />
+                  <br />Date: <input class="date" type="text" disabled />
+                  <br />Customer Name:
+                  <b
+                    ><input class="customer" type="text" value="Guest" disabled
+                  /></b>
+                  <br />Cashier:
+                  <input class="cashier" type="text" disabled />
                 </td>
-            </tr>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
-            <tr class="heading">
-                <td>Item</td>
-
-                <td>Unit Price</td>
-
-                <td>Quantity</td>
-
-                <td>Total</td>
-            </tr>
-
-            <tr class="item">
+        <tr class="information">
+          <td colspan="4">
+            <table>
+              <tr>
                 <td>
-                    <input class="product" value="" />
+                  Mini Mart.<br />
+                  Phnom Penh<br />
+                  Kampuchea Krom Bvl
                 </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
-                <td>$ <input class="price" type="number" value="" /></td>
+        <tr class="heading">
+          <td>Item</td>
 
-                <td>
-                    <input class="quantity" type="number" value="" min="1" />
-                </td>
+          <td>Unit Price</td>
 
-                <td>
-                    <span class="total">$ 00.00</span>
-                </td>
-            </tr>
+          <td>Quantity</td>
 
-            <tr>
-                <td colspan="4">
-                    <button class="btn-add-row">Add row</button>
-                </td>
-            </tr>
+          <td>Total</td>
+        </tr>
 
-            <tr class="total">
-                <td colspan="3"></td>
-                <td>Grand Total: $ 00.00</td>
-            </tr>
-        </table>
+        <tr class="item hidden">
+          <td>
+            <input class="product" value="" readonly="true" />
+          </td>
+
+          <td>
+            $ <input class="price" type="number" value="" readonly="true" />
+          </td>
+
+          <td>
+            <input
+              class="quantity"
+              type="number"
+              value=""
+              min="1"
+              readonly="true"
+            />
+          </td>
+          <td>
+            <span class="total">$ 00.00</span>
+          </td>
+        </tr>
+
+        <tr style="display: none;">
+          <td colspan="4">
+            <label for="barcodeImageInput" class="file-upload">
+              <i class="fas fa-upload"></i>Scan BarCode with Picture
+            </label>
+            <input
+              type="file"
+              id="barcodeImageInput"
+              accept="image/*"
+              style="display: none"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <button id="scanButton" class="file-upload" style="font-size: 15px">
+              <i class="fas fa-camera"></i> Scan Barcode with Camera
+            </button>
+            <button
+              id="closeCamera"
+              class="file-upload"
+              style="font-size: 15px; display: none"
+            >
+              <i class="fas fa-camera"></i> Close Camera
+            </button>
+          </td>
+        </tr>
+
+        <tr class="total">
+          <td colspan="3"></td>
+          <td>Grand Total: $ 00.00</td>
+        </tr>
+      </table>
     </div>
-
+    <div id="scanner" style=""></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2023.3.1114/js/kendo.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
+
     <script>
-        function getCurrentDate() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, "0");
-            const day = String(now.getDate()).padStart(2, "0");
-            return `${year}-${month}-${day}`;
-        }
+      let scanning = false; // Flag to track scanning status
+      let lastScanTime = 0; // Timestamp of the last scan
+      $("#closeCamera").on("click", function () {
+        $(this).hide();
+        $("#scanner").hide();
+        $("#scanButton").show();
+        Quagga.stop();
+      });
+      $("#scanButton").on("click", function () {
+        $("#closeCamera").show();
+        $(this).hide();
+        if (scanning) return; // If scanning is already in progress, do nothing
+        $("#scanner").show();
+        scanning = true; // Set scanning flag to true
 
-        $(".date").val(getCurrentDate());
-        if (!sessionStorage.getItem("username")) {
-            window.location.href = "/account/login";
-        }
-        $(".cashier").val(sessionStorage.getItem("username"));
-
-        var products = $(".product")
-            .kendoDropDownList({
-                optionLabel: "Select product...",
-                dataTextField: "productName",
-                dataValueField: "id",
-                dataSource: [],
-            })
-            .data("kendoDropDownList");
-
-        $(".product").on("change", function () {
-            var currentRow = $(this).closest("tr");
-            var productDropdown = currentRow
-                .find(".product")
-                .data("kendoDropDownList");
-            let product = products.value();
-            $.ajax({
-                url: "http://localhost:8888/api/product/price/" + product,
-                method: "GET",
-                success: function (data) {
-                    currentRow.find(".price").val(data[0].id);
-                    currentRow.find(".quantity").val("");
-                },
-                error: function () { },
-            });
-            $.ajax({
-                url: "http://localhost:8888/api/product/quantity/" + product,
-                method: "GET",
-                success: function (data) {
-                    var maxQuantity = data[0].id;
-
-                    if (maxQuantity == 0) {
-                        var quantityTd = currentRow.find(".quantity").parent();
-                        var outOfStockSpan = quantityTd.find(".out-of-stock");
-                        if (outOfStockSpan.length === 0) {
-                            outOfStockSpan = $("<span>")
-                                .addClass("out-of-stock")
-                                .text("Out of stock")
-                                .css("color", "red");
-                            quantityTd.append(outOfStockSpan);
-                        } else {
-                            outOfStockSpan.show();
-                        }
-                        currentRow.find(".quantity").hide();
-                    } else {
-                        currentRow.find(".quantity").attr("max", maxQuantity).show();
-                        currentRow.find(".quantity").attr("placeholder", "1-" + maxQuantity).show();
-                        currentRow
-                            .find(".quantity")
-                            .parent()
-                            .find(".out-of-stock")
-                            .hide();
-                    }
-                },
-                error: function () {
-                },
-            });
-        });
-
-        $.ajax({
-            url: "http://localhost:8888/api/products",
-            method: "GET",
-            success: function (data) {
-                products.setDataSource(data);
+        // Initialize Quagga
+        Quagga.init(
+          {
+            inputStream: {
+              name: "Live",
+              type: "LiveStream",
+              target: document.querySelector("#scanner"), // Use the div element as the target
+              constraints: {
+                facingMode: "environment", // Use the rear camera of the device
+              },
             },
-            error: function () { },
-        });
-
-        $("#submit").on("click", function (e) {
-            e.preventDefault();
-            var jsonData = [];
-            var customerName = $(".customer").val();
-            if (!customerName.trim()) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Please enter customer name",
-                    showCancelButton: false,
-                    confirmButtonText: "OK",
-                });
-                return;
+            decoder: {
+              readers: ["ean_reader"], // Specify barcode types to decode (EAN)
+            },
+          },
+          function (err) {
+            if (err) {
+              console.error(err);
+              alert("Error initializing Quagga.");
+              scanning = false; // Reset scanning flag
+              return;
             }
-            var valid = true;
-            $("tr.item").each(function () {
-                var rowValues = [];
-                var $this = $(this);
-                $this.find("input, span").each(function () {
-                    var value = $(this).val();
-                    if (value) {
-                        rowValues.push(value);
-                    }
-                });
-                var productName = rowValues[0];
-                var quantity = parseInt(rowValues[2]);
-                var unitPrice = parseFloat(rowValues[1]);
-                var total = unitPrice * quantity;
-                var productID = products.dataSource
-                    .data()
-                    .find((p) => p.productName === productName).id;
-
-                $.ajax({
-                    url: "http://localhost:8888/api/product/quantity/" + productID,
-                    method: "GET",
-                    async: false,
-                    success: function (data) {
-                        var maxQuantity = data[0].id;
-                        if (maxQuantity < quantity) {
-                            Swal.fire({
-                                icon: "error",
-                                title: `Insufficient quantity for ${productName}`,
-                                showCancelButton: false,
-                                confirmButtonText: "OK",
-                            });
-                            valid = false;
-                            return false;
-                        }
-                    },
-                    error: function () {
-                    },
-                });
-
-                if (!valid) return false;
-
-                var payment = {
-                    productName: productName,
-                    quantity: quantity,
-                    unitPrice: unitPrice,
-                    total: total,
-                    cashier: sessionStorage.getItem("username"),
-                    customerName: $(".customer").val(),
-                };
-                jsonData.push(payment);
-            });
-
-            if (valid) {
-                $.ajax({
-                    type: "POST",
-                    url: "/product/payment/save",
-                    contentType: "application/json",
-                    data: JSON.stringify(jsonData),
-                    success: function (response) {
-                        Swal.fire({
-                            icon: "success",
-                            title: response,
-                            showCancelButton: false,
-                            confirmButtonText: "Ok",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "/product";
-                            }
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        Swal.fire({
-                            icon: "error",
-                            title: xhr.responseText,
-                            showCancelButton: false,
-                            confirmButtonText: "Back to List",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "/product";
-                            }
-                        });
-                    },
-                });
-            }
-        });
-
-        $("table").on("mouseup keyup", "input[type=number]", () =>
-            calculateTotals()
+            console.log("Quagga initialized successfully.");
+            Quagga.start(); // Start scanning
+          }
         );
 
-        $(".btn-add-row").on("click", () => {
-            const $lastRow = $(".item:last");
-            const $newRow = $lastRow.clone();
+        // Add listener for scan event
+        Quagga.onDetected(function (result) {
+          let currentTime = new Date().getTime();
+          if (currentTime - lastScanTime < 1000) return; // If less than 0.5 second has passed since the last scan, ignore
+          lastScanTime = currentTime; // Update last scan time
+          let barcode = result.codeResult.code;
+          var audio = new Audio("../../sound/barcode.wav"); // Replace with the path to your sound file
+          audio.play();
+          console.log("Scanned barcode:", barcode);
+          addRow(barcode);
+          scanning = false; // Reset scanning flag
+          // Stop scanning after a barcode is detected (optional)
+        });
+      });
 
-            $newRow.find("input").val("");
-            $newRow.find("td:last").text("$0.00");
-            $newRow.insertAfter($lastRow);
-            const newProductInput = $newRow.find(".product");
-
-            $.ajax({
-                url: "http://localhost:8888/api/products",
-                method: "GET",
-                success: function (data) {
-                    newProductInput.kendoDropDownList({
-                        optionLabel: "Select product...",
-                        dataTextField: "productName",
-                        dataValueField: "id",
-                        dataSource: data,
-                    });
-
-                    newProductInput.on("change", function () {
-                        var currentRow = $(this).closest("tr");
-                        var productDropdown = currentRow
-                            .find(".product")
-                            .find(".k-input-value-text");
-
-                        $.ajax({
-                            url:
-                                "http://localhost:8888/api/product/price/" +
-                                productDropdown.text(),
-                            method: "GET",
-                            success: function (data) {
-                                currentRow.find(".price").val(data[0].id);
-                                currentRow.find(".quantity").val("");
-                            },
-                            error: function () { },
-                        });
-                        $.ajax({
-                            url:
-                                "http://localhost:8888/api/product/quantity/" +
-                                productDropdown.text(),
-                            method: "GET",
-                            success: function (data) {
-                                var maxQuantity = data[0].id;
-
-                                if (maxQuantity == 0) {
-                                    var quantityTd = currentRow.find(".quantity").parent();
-                                    var outOfStockSpan = quantityTd.find(".out-of-stock");
-                                    if (outOfStockSpan.length === 0) {
-                                        outOfStockSpan = $("<span>")
-                                            .addClass("out-of-stock")
-                                            .text("Out of stock")
-                                            .css("color", "red");
-                                        quantityTd.append(outOfStockSpan);
-                                    } else {
-                                        outOfStockSpan.show();
-                                    }
-                                    currentRow.find(".quantity").hide();
-                                } else {
-                                    currentRow
-                                        .find(".quantity")
-                                        .attr("max", maxQuantity)
-                                        .show();
-                                    currentRow
-                                        .find(".quantity")
-                                        .parent()
-                                        .find(".out-of-stock")
-                                        .hide();
-                                }
-                            },
-                            error: function () { },
-                        });
-                    });
-                },
-                error: function () { },
-            });
-
-            newProductInput.focus();
+      function addRow(barcode) {
+        // Check if the barcode already exists in any row
+        const existingRow = $(".item").filter(function () {
+          return $(this).data("barcode") === barcode;
         });
 
-        function getData() {
-            var values = [];
-
-            $("tr.item").each(function () {
-                var rowValues = [];
-                $(this)
-                    .find("input, span")
-                    .each(function () {
-                        var value = $(this).val() || $(this).text();
-                        rowValues.push(value);
-                    });
-                values.push(rowValues);
-            });
-        }
-        getData();
-        calculateTotals();
-        function calculateTotals() {
-            const subtotals = $(".item")
-                .map((idx, val) => calculateSubtotal(val))
-                .get();
-            const total = subtotals.reduce((a, v) => a + Number(v), 0);
-            $(".total td:eq(1)").text(formatAsCurrency(total));
+        if (existingRow.length > 0) {
+          const quantityInput = existingRow.find(".quantity");
+          const quantity = parseInt(quantityInput.val()) + 1;
+          quantityInput.val(quantity);
+          calculateTotals();
+          return; // Exit the function since no new row needs to be added
         }
 
-        function calculateSubtotal(row) {
-            const $row = $(row);
-            const inputs = $row.find("input");
-            const subtotal = inputs[1].value * inputs[2].value;
+        // If the barcode doesn't exist, proceed to add a new row
+        const $lastRow = $(".item:last");
+        const $newRow = $lastRow.clone();
 
-            $row.find("td:last").text(formatAsCurrency(subtotal));
+        // Remove the hidden class from the cloned row
+        $newRow.removeClass("hidden");
 
-            return subtotal;
-        }
+        $newRow.find("input").val("");
+        $newRow.find("td:last").text("$0.00");
+        $newRow.insertAfter($lastRow);
+        const newProductInput = $newRow.find(".product");
 
-        function formatAsCurrency(amount) {
-            return `$ ${Number(amount).toFixed(2)}`;
-        }
-
-        $(".quantity").on("keyup", function () {
-            if ($(this).closest("tr").find(".quantity").val() > $(this).closest("tr").find(".quantity").attr("max") || $(this).val() < 1) {
-                console.log($(this).closest("tr").find(".quantity").val())
+        $.ajax({
+          url: "http://localhost:8888/api/product/barcode/" + barcode,
+          method: "GET",
+          success: function (data) {
+            if (data.length > 0) {
+              console.log(data[0].productName);
+              $newRow.find(".barcode").val(barcode);
+              $newRow.find(".product").val(data[0].productName);
+              $newRow.find(".price").val(data[0].unitPrice);
+              $newRow.find(".quantity").val(1);
+              calculateTotals();
+            } else {
+              // No product found with the given barcode, remove the newly added row
+              $newRow.remove();
             }
+          },
+          error: function () {
+            alert("Error fetching product data");
+          },
         });
-    </script>
-</body>
+        newProductInput.focus();
 
+        // Set the barcode as a data attribute for the new row
+        $newRow.data("barcode", barcode);
+      }
+      function scanBarcode() {
+        const input = document.getElementById("barcodeImageInput");
+        const file = input.files[0];
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("image", file);
+
+          fetch("http://localhost:8888/api/scanBarcode", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.text();
+            })
+            .then((data) => {
+              addRow(data);
+            })
+            .catch((error) => {
+              console.error(
+                "There was a problem with the fetch operation:",
+                error
+              );
+              alert("Error scanning barcode");
+            });
+        }
+      }
+      function getCurrentDate() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      $(".date").val(getCurrentDate());
+      if (!sessionStorage.getItem("username")) {
+        window.location.href = "/account/login";
+      }
+      $(".cashier").val(sessionStorage.getItem("username"));
+      $("#barcodeImageInput").on("change", function () {
+        // Clear the input value to ensure the change event triggers even if the same file is chosen
+
+        scanBarcode();
+        this.value = "";
+      });
+
+      $("#submit").on("click", function (e) {
+        e.preventDefault();
+        var jsonData = [];
+        var customerName = $(".customer").val();
+        if (!customerName.trim()) {
+          Swal.fire({
+            icon: "warning",
+            title: "Please enter customer name",
+            showCancelButton: false,
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        var valid = true;
+        $("tr.item").each(function () {
+          var rowValues = [];
+          var $this = $(this);
+          var productName = $this.find(".product").val().trim(); // Get the product name
+          if (productName) {
+            // Check if product name exists
+            $this.find("input, span").each(function () {
+              var value = $(this).val();
+              if (value) {
+                rowValues.push(value);
+              }
+            });
+            var quantity = parseInt(rowValues[2]);
+            var unitPrice = parseFloat(rowValues[1]);
+            var total = unitPrice * quantity;
+
+            var payment = {
+              productName: productName,
+              quantity: quantity,
+              unitPrice: unitPrice,
+              total: total,
+              cashier: sessionStorage.getItem("username"),
+              customerName: $(".customer").val(),
+            };
+            jsonData.push(payment);
+          }
+        });
+
+        if (valid) {
+          $.ajax({
+            type: "POST",
+            url: "/product/payment/save",
+            contentType: "application/json",
+            data: JSON.stringify(jsonData),
+            success: function (response) {
+              Swal.fire({
+                icon: "success",
+                title: response,
+                showCancelButton: false,
+                confirmButtonText: "Ok",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = "/product";
+                }
+              });
+            },
+            error: function (xhr, status, error) {
+              Swal.fire({
+                icon: "error",
+                title: xhr.responseText,
+                showCancelButton: false,
+                confirmButtonText: "Back to List",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = "/product";
+                }
+              });
+            },
+          });
+        }
+      });
+      function getData() {
+        var values = [];
+
+        $("tr.item").each(function () {
+          var rowValues = [];
+          $(this)
+            .find("input, span")
+            .each(function () {
+              var value = $(this).val() || $(this).text();
+              rowValues.push(value);
+            });
+          values.push(rowValues);
+        });
+      }
+      getData();
+      calculateTotals();
+      function calculateTotals() {
+        const subtotals = $(".item")
+          .map((idx, val) => calculateSubtotal(val))
+          .get();
+        const total = subtotals.reduce((a, v) => a + Number(v), 0);
+        $(".total td:eq(1)").text(formatAsCurrency(total));
+      }
+
+      function calculateSubtotal(row) {
+        const $row = $(row);
+        const inputs = $row.find("input");
+        const subtotal = inputs[1].value * inputs[2].value;
+
+        $row.find("td:last").text(formatAsCurrency(subtotal));
+
+        return subtotal;
+      }
+
+      function formatAsCurrency(amount) {
+        return `$ ${Number(amount).toFixed(2)}`;
+      }
+    </script>
+  </body>
 </html>

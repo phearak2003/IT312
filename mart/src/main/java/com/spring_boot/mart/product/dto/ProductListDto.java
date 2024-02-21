@@ -9,4 +9,5 @@ import lombok.experimental.FieldDefaults;
 public class ProductListDto {
     String id;
     String productName;
+    String unitPrice;
 }

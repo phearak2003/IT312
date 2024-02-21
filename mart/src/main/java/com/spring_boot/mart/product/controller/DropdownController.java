@@ -45,6 +45,18 @@ public class DropdownController {
         }
         return resultList;
     }
+    @GetMapping("/product/barcode/{barcode}")
+    public List<ProductListDto> productwithBarcode(@PathVariable String barcode) {
+        List<Object[]> list = productRepository.getProductWithBarCode(barcode);
+        List<ProductListDto> resultList = new ArrayList<>();
+        for (Object[] data : list) {
+            ProductListDto listDto = new ProductListDto();
+            listDto.setUnitPrice((String) data[1]);
+            listDto.setProductName((String) data[0]);
+            resultList.add(listDto);
+        }
+        return resultList;
+    }
 
     @GetMapping("/product/quantity/{product}")
     public List<ProductListDto> quantityList(@PathVariable String product) {

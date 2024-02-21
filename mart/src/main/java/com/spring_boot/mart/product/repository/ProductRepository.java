@@ -21,5 +21,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT quantity FROM tbl_product WHERE product_name = :product  ", nativeQuery = true)
     List<Object[]> getQuantity(@Param("product") String product);
+    
+    @Query(value = "SELECT product_name,unit_price FROM tbl_product WHERE barcode = :barcode  ", nativeQuery = true)
+    List<Object[]> getProductWithBarCode(@Param("barcode") String barcode);
 
 }

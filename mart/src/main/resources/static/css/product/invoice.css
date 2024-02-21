@@ -6,7 +6,14 @@
         display: none !important;
     }
     .btn-add-row{
+<<<<<<< Updated upstream
         display: none;
+=======
+        display: none !important;
+    }
+    #scanButton{
+        display: none !important;
+>>>>>>> Stashed changes
     }
 }
 
@@ -14,11 +21,33 @@ body {
     font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
         sans-serif;
 }
-
+.hidden{
+    display: none;
+}
 input {
     border: none;
 }
+.file-upload {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    color: #333;
+}
 
+.file-upload:hover {
+    background-color: #e0e0e0;
+}
+
+.file-upload i {
+    margin-right: 8px;
+}
+
+#barcodeImageInput {
+    display: none;
+}
 .actions{
     text-align: center;
     margin: 20px 0;
