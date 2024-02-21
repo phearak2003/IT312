@@ -6,14 +6,10 @@
         display: none !important;
     }
     .btn-add-row{
-<<<<<<< Updated upstream
-        display: none;
-=======
         display: none !important;
     }
     #scanButton{
         display: none !important;
->>>>>>> Stashed changes
     }
 }
 

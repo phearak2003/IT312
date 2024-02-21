@@ -19,6 +19,10 @@
   </head>
 
   <body>
+    <div id="scanner" style="position: absolute;
+    left: 0%;
+    top:-25%;
+   "></div>
     <section class="actions">
       <a th:href="@{/product}" class="button" style="background-color: red"
         >Back</a
@@ -40,26 +44,6 @@
       >
     </section>
     <div class="invoice-box">
-<<<<<<< Updated upstream
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-                <td colspan="4">
-                    <table>
-                        <tr>
-                            <td class="title">
-                                <img src="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" style="width: 100%; max-width: 80px" />
-                            </td>
-
-                            <td class="detail">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/create" style="width: 70px" alt="" />
-                                <br />
-                                Date: <input class="date" type="text" disabled /> <br />Customer
-                                Name: <b><input class="customer" type="text" /></b>
-                                <br />Cashier: <input class="cashier" type="text" disabled />
-                            </td>
-                        </tr>
-                    </table>
-=======
       <table cellpadding="0" cellspacing="0">
         <tr class="top">
           <td colspan="4">
@@ -70,7 +54,6 @@
                     src="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
                     style="width: 100%; max-width: 80px"
                   />
->>>>>>> Stashed changes
                 </td>
 
                 <td class="detail">
@@ -131,7 +114,7 @@
               type="number"
               value=""
               min="1"
-              readonly="true"
+              
             />
           </td>
           <td>
@@ -139,7 +122,7 @@
           </td>
         </tr>
 
-        <tr style="display: none;">
+        <tr style="display: none">
           <td colspan="4">
             <label for="barcodeImageInput" class="file-upload">
               <i class="fas fa-upload"></i>Scan BarCode with Picture
@@ -172,8 +155,7 @@
           <td>Grand Total: $ 00.00</td>
         </tr>
       </table>
-    </div>
-    <div id="scanner" style=""></div>
+    <div id="scanner" style="position: absolute; right: 0%; top: 10%"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2023.3.1114/js/kendo.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -195,37 +177,42 @@
         $("#scanner").show();
         scanning = true; // Set scanning flag to true
 
-        // Initialize Quagga
-        Quagga.init(
-          {
-            inputStream: {
-              name: "Live",
-              type: "LiveStream",
-              target: document.querySelector("#scanner"), // Use the div element as the target
-              constraints: {
-                facingMode: "environment", // Use the rear camera of the device
-              },
-            },
-            decoder: {
-              readers: ["ean_reader"], // Specify barcode types to decode (EAN)
-            },
-          },
-          function (err) {
-            if (err) {
-              console.error(err);
-              alert("Error initializing Quagga.");
-              scanning = false; // Reset scanning flag
-              return;
-            }
-            console.log("Quagga initialized successfully.");
-            Quagga.start(); // Start scanning
-          }
-        );
+Quagga.init(
+  {
+    inputStream: {
+      name: "Live",
+      type: "LiveStream",
+      target: document.querySelector("#scanner"), // Use the div element as the target
+      constraints: {
+        facingMode: "environment", // Use the rear camera of the device
+      },
+    },
+    decoder: {
+      readers: ["ean_reader"], // Specify barcode types to decode (EAN)
+    },
+  },
+  function (err) {
+    if (err) {
+      console.error(err);
+      alert("Error initializing Quagga.");
+      scanning = false; // Reset scanning flag
+      return;
+    }
+    console.log("Quagga initialized successfully.");
+    Quagga.start(); // Start scanning
+    
+    // Set width and height of the video element
+    const videoElement = document.querySelector("#scanner video");
+    videoElement.width = 360; // Set your desired width
+    videoElement.height = 180; // Set your desired height
+  }
+);
+
 
         // Add listener for scan event
         Quagga.onDetected(function (result) {
           let currentTime = new Date().getTime();
-          if (currentTime - lastScanTime < 1000) return; // If less than 0.5 second has passed since the last scan, ignore
+          if (currentTime - lastScanTime < 2000) return; // If less than 0.5 second has passed since the last scan, ignore
           lastScanTime = currentTime; // Update last scan time
           let barcode = result.codeResult.code;
           var audio = new Audio("../../sound/barcode.wav"); // Replace with the path to your sound file
