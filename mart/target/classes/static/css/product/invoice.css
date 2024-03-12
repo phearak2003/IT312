@@ -11,8 +11,13 @@
     #scanButton{
         display: none !important;
     }
+        .detail img {
+            display: inline !important;
+        }
 }
-
+.detail img{
+    display: none;
+}
 body {
     font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial,
         sans-serif;

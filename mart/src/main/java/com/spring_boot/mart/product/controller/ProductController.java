@@ -38,6 +38,10 @@ public class ProductController {
         return "payment/index";
     }
     
+    @GetMapping("/payment/test")
+    public String testpayment() {
+        return "payment/test";
+    }
 
     @GetMapping("/payment/create")
     public String createPayment() {
@@ -72,6 +76,14 @@ public class ProductController {
         List<Payment> payments = paymentRepository.findAllByOrderByDateDesc();
         model.addAttribute("payments", payments);
         return "payment/soldproduct";
+    }
+    
+    @GetMapping("/payment/recipe/{paymentid}")
+    public String soldProductsRecipe(@PathVariable String paymentid, Model model) {
+        List<Payment> payments = paymentRepository.getRecipe(paymentid);
+        model.addAttribute("payments", payments);
+        System.out.println(payments);
+        return "payment/recipe";
     }
 
     @GetMapping("/soldproduct/detail/{id}")
