@@ -56,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             productRepository.saveAll(payments);
-            return ResponseEntity.ok("Product has been added successfully.");
+            return ResponseEntity.ok(paymentId);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }

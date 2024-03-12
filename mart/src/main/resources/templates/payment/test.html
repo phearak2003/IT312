@@ -1,0 +1,33 @@
+<!-- index.html (Web Application) -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcode Receiver</title>
+  </head>
+  <body>
+    <h1>Barcode Receiver</h1>
+    <ul id="barcodeList"></ul>
+
+    <script>
+      // Function to handle incoming barcode data
+      function handleBarcodeData(data) {
+        // Process the received barcode data
+        console.log("Received barcode:", data);
+        // Display the barcode data on the web page
+        var barcodeList = document.getElementById("barcodeList");
+        var listItem = document.createElement("li");
+        listItem.textContent = data;
+        barcodeList.appendChild(listItem);
+      }
+
+      // WebSocket connection to receive barcode data
+      var socket = new WebSocket("ws://172.16.100.241:8888");
+      socket.onmessage = function (event) {
+        var data = event.data;
+        handleBarcodeData(data);
+      };
+    </script>
+  </body>
+</html>

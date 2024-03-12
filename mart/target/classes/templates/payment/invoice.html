@@ -27,14 +27,7 @@
       <a th:href="@{/product}" class="button" style="background-color: red"
         >Back</a
       >
-      <a
-        href="#"
-        class="button"
-        type="button"
-        style="background-color: rgb(0, 183, 255)"
-        onclick="print()"
-        >Print</a
-      >
+
       <a
         href="#"
         id="submit"
@@ -57,8 +50,8 @@
                 </td>
 
                 <td class="detail">
-                  <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=s"
+                  <img id="qrCodeImage"
+                    src=""
                     style="width: 70px"
                     alt=""
                   />
@@ -373,17 +366,27 @@ Quagga.init(
             url: "/product/payment/save",
             contentType: "application/json",
             data: JSON.stringify(jsonData),
-            success: function (response) {
-              Swal.fire({
+           success: function (response) {
+              const timestamp = new Date().getTime();
+              const newSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/recipe/${response}&timestamp=${timestamp}`;
+              qrCodeImage.onload = function() {
+                print();
+                Swal.fire({
                 icon: "success",
-                title: response,
+                title: "Payment Successfully",
                 showCancelButton: false,
                 confirmButtonText: "Ok",
+                html: `
+                  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/recipe/${response}" style="width: 70px" alt="">
+                `
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.href = "/product";
                 }
               });
+              };
+              qrCodeImage.setAttribute("src", newSrc);
+              
             },
             error: function (xhr, status, error) {
               Swal.fire({

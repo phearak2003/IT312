@@ -97,7 +97,6 @@
               </tr>
             </thead>
             <tbody id="productTableBody">
-              <!-- Table body content will be dynamically populated -->
               <tr th:each="payment: ${payments}">
                 <td th:text="${payment.id}" />
                 <td th:text="${payment.productName}" />
