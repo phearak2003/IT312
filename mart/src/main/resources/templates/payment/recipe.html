@@ -1,128 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Invoice</title>
     <script src="https://kit.fontawesome.com/2c890fe521.js" crossorigin="anonymous"></script>
-    <link
-      rel="shortcut icon"
-      href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
-      type="image/x-icon"
-    />
+    <link rel="shortcut icon" href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" type="image/x-icon" />
     <link th:href="@{/css/product/invoice.css}" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css"
-    />
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/themes/7.0.2/default/default-main.css" />
+</head>
+
+<body>
     <div class="invoice-box">
-      <table cellpadding="0" cellspacing="0">
-        <tr class="top">
-          <td colspan="4">
-            <table>
-              <tr>
-                <td class="title">
-                  <img
-                    src="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
-                    style="width: 100%; max-width: 80px"
-                  />
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" style="width: 100%; max-width: 80px" />
+                            </td>
+                            <td class="detail">
+                                <img id="qrcode" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/recipe/" style="width: 70px; display: inline" alt="" />
+                                <br /><span>Date:</span>
+                                <span class="date" th:text="${payments[0].date}"></span>
+                                <br /><span style="margin-right: 103px;">Customer Name:</span>
+                                <span class="customer" th:text="${payments[0].customerName}"></span>
+                                <br /><span style="margin-right: 80px;">Cashier:</span>
+                                <span class="cashier" th:text="${payments[0].cashier}"></span>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
-                <td class="detail">
-                  <img
-                    id="qrcode"
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/recipe/"
-                    style="width: 70px; display: inline"
-                    alt=""
-                  />
-                  <br /><span>Date:</span>
-                  <span class="date" th:text="${payments[0].date}"></span>
-                  <br /><span style="margin-right: 103px;">Customer Name:</span>
-                  <span
-                    class="customer"
-                    th:text="${payments[0].customerName}"
-                  ></span>
-                  <br /><span style="margin-right: 80px;">Cashier:</span>
-                  <span class="cashier" th:text="${payments[0].cashier}"></span>
+            </tr>
+            <tr class="information">
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td>
+                                Mini Mart.<br />
+                                Phnom Penh<br />
+                                Kampuchea Krom Bvl
+                            </td>
+                        </tr>
+                    </table>
                 </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr class="information">
-          <td colspan="4">
-            <table>
-              <tr>
-                <td>
-                  Mini Mart.<br />
-                  Phnom Penh<br />
-                  Kampuchea Krom Bvl
+            </tr>
+            <tr class="heading">
+                <td>Item</td>
+                <td>Unit Price</td>
+                <td>Quantity</td>
+                <td>Total</td>
+            </tr>
+            <!-- Iterate over each payment and display its details -->
+            <tr th:each="payment: ${payments}">
+                <td th:text="${payment.productName}" />
+                <td th:text="${payment.unitPrice}">$</td>
+                <td th:text="${payment.quantity}"></td>
+                <td th:text="${payment.quantity * payment.unitPrice}"></td>
+            </tr>
+            <tr class="total">
+                <td colspan="3"></td>
+                <td>Grand Total: $ <span id="grandTotal">0.00</span></td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td class="actions">
+                    <a href="#" class="button" type="button" style="background-color: rgb(0, 183, 255)" onclick="printInvoice()"><i class="fa-solid fa-print" style="margin-right: 5px;"></i>Print</a>
                 </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr class="heading">
-          <td>Item</td>
-          <td>Unit Price</td>
-          <td>Quantity</td>
-          <td>Total</td>
-        </tr>
-        <!-- Iterate over each payment and display its details -->
-        <tr th:each="payment: ${payments}">
-          <td th:text="${payment.productName}" />
-          <td th:text="${payment.unitPrice}">$</td>
-          <td th:text="${payment.quantity}"></td>
-          <td th:text="${payment.quantity * payment.unitPrice}"></td>
-        </tr>
-        <tr class="total">
-          <td colspan="3"></td>
-          <td>Grand Total: $ <span id="grandTotal">0.00</span></td>
-        </tr>
-        <tr>
-          <td colspan="3"></td>
-          <td class="actions">
-            <a
-              href="#"
-              class="button"
-              type="button"
-              style="background-color: rgb(0, 183, 255)"
-              onclick="printInvoice()"
-              ><i class="fa-solid fa-print" style="margin-right: 5px;"></i>Print</a
-            >
-          </td>
-        </tr>
-      </table>
+            </tr>
+        </table>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-      // Sample JavaScript function to handle printing action
-      function printInvoice() {
-        // Replace this with your actual printing logic
-        window.print();
-      }
+        function printInvoice() {
+            window.print();
+        }
     </script>
     <script th:inline="javascript">
-            $(document).ready(function () {
-                var grandTotal = 0;
-                let paymentId;
-                /* Iterate over each payment */
-                /* Calculate total for each payment and add to grandTotal */
-                /* Update the grand total displayed in the HTML */
-                [[${payments}]].forEach(function(payment) {
-                    var total = payment.quantity * payment.unitPrice;
-                    grandTotal += total;
-                    paymentId = payment.paymentId;
-                });
-                 const timestamp = new Date().getTime();
-      const newSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/recipe/${paymentId}&timestamp=${timestamp}`;
-        $("#qrcode").attr("src", newSrc); // Use .attr() method to set src attribute
-
-                $("#grandTotal").text(grandTotal.toFixed(2)); // Display grand total with 2 decimal places
-
+        $(document).ready(function () {
+            var grandTotal = 0;
+            let paymentId;
+            [[${ payments }]].forEach(function (payment) {
+                var total = payment.quantity * payment.unitPrice;
+                grandTotal += total;
+                paymentId = payment.paymentId;
             });
+            const timestamp = new Date().getTime();
+            const newSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://localhost:8888/product/payment/recipe/${paymentId}&timestamp=${timestamp}`;
+            $("#qrcode").attr("src", newSrc);
+
+            $("#grandTotal").text(grandTotal.toFixed(2));
+        });
     </script>
-  </body>
+</body>
+
 </html>

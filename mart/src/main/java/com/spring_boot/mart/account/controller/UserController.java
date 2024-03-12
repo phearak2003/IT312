@@ -1,7 +1,9 @@
 package com.spring_boot.mart.account.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring_boot.mart.account.dto.MenuItemDto;
 import com.spring_boot.mart.account.dto.UserDto;
+import com.spring_boot.mart.account.entity.Permission;
 import com.spring_boot.mart.account.entity.User;
+import com.spring_boot.mart.account.repository.PermissionRepository;
 import com.spring_boot.mart.account.repository.UserRepository;
 import com.spring_boot.mart.account.service.impl.UserServiceImpl;
 import com.spring_boot.mart.product.entity.Product;
 import com.spring_boot.mart.product.repository.ProductRepository;
 import com.spring_boot.mart.product.service.impl.ProductServiceImpl;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(path = "/account")
@@ -32,6 +40,8 @@ public class UserController {
     ProductRepository productRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PermissionRepository permissionRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -39,15 +49,29 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> validation(@RequestBody UserDto user) {
+    public ResponseEntity<?> validation(@RequestBody UserDto user, HttpSession session) {
         User validation = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
         if (validation != null) {
-            if(validation.getIsActive() == 1){
-                return ResponseEntity.ok("Login Successfully!");
+            if (validation.getIsActive() == 1) {
+                return ResponseEntity.ok(validation.getRole());
             }
-            return ResponseEntity.badRequest().body("User account has been block!");
+            return ResponseEntity.badRequest().body("User account has been blocked!");
         }
         return ResponseEntity.badRequest().body("Invalid username or password");
+    }
+
+    @GetMapping("/fetch-menu")
+    public ResponseEntity<List<MenuItemDto>> fetchMenu(@RequestParam String role) {
+        List<Permission> permissions = permissionRepository.findByRoleAndIsActive(role, 1);
+        List<MenuItemDto> menuItems = new ArrayList<>();
+        for (Permission permission : permissions) {
+            MenuItemDto menuItem = new MenuItemDto();
+            menuItem.setLabel(permission.getMenu());
+            menuItem.setLink(permission.getLink());
+            menuItem.setIcon(permission.getIcon());
+            menuItems.add(menuItem);
+        }
+        return ResponseEntity.ok(menuItems);
     }
 
     @GetMapping("/users")

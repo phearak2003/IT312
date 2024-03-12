@@ -42,10 +42,11 @@
                     data: JSON.stringify(jsonData),
                     success: function (response) {
                         sessionStorage.setItem("username", jsonData.username);
+                        sessionStorage.setItem("role", response);
 
                         Swal.fire({
                             icon: "success",
-                            title: response,
+                            title: "Login successfully!",
                             showCancelButton: false,
                             confirmButtonText: "Ok"
                         }).then((result) => {

@@ -1,199 +1,109 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Delete User</title>
-    <link
-      rel="shortcut icon"
-      href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg"
-      type="image/x-icon"
-    />
+    <link rel="shortcut icon" href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" type="image/x-icon" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 
     <link th:href="@{/css/product/style.css}" rel="stylesheet" />
-  </head>
+</head>
 
-  <body>
+<body>
     <header role="banner">
-      <h1>Mini Mart</h1>
-      <ul class="utilities">
-        <br />
-        <li><span id="greeting"></span></li>
-        <li class="logout warn"><a id="logout" href="#">Log Out</a></li>
-      </ul>
+        <h1>Mini Mart</h1>
+        <ul class="utilities">
+            <br />
+            <li><span id="greeting"></span></li>
+            <li class="logout warn"><a id="logout" href="#">Log Out</a></li>
+        </ul>
     </header>
 
     <nav role="navigation">
-      <ul class="main">
-        <li>
-          <a href="/product/payment/create"
-            ><i class="fa-solid fa-bag-shopping"></i> Payment</a
-          >
-        </li>
-        <li>
-          <a href="/product"><i class="fa-solid fa-warehouse"></i> Stock</a>
-        </li>
-        <li>
-          <a href="/product/soldproduct"
-            ><i class="fa-solid fa-warehouse"></i> Payment History
-          </a>
-        </li>
-        <li>
-          <a href="/account/users"
-            ><i class="fa-solid fa-user"></i> Manage User</a
-          >
-        </li>
-      </ul>
+        <ul class="main">
+            <li th:each="menuItem : ${menuItems}">
+                <a th:href="@{${menuItem.link}}"><i th:class="${menuItem.icon}"></i> ${menuItem.label}</a>
+            </li>
+        </ul>
     </nav>
+    
     <main role="main">
-      <section class="panel important">
-        <div class="row my-5">
-          <div class="col-md-4"></div>
-          <div class="col-md-4">
-            <div class="form">
-              <form
-                class="register-form"
-                method="post"
-                action="#"
-                th:action="@{/account/user/delete/{username}}"
-                id="form"
-              >
-                <h1>Delete</h1>
-                <input
-                  type="text"
-                  class="form-control mb-3"
-                  id="id"
-                  readonly
-                  disabled
-                  name="id"
-                  th:value="${user.id}"
-                />
-                <input
-                  type="text"
-                  class="form-control mb-3"
-                  id="username"
-                  readonly
-                  disabled
-                  name="username"
-                  th:value="${user.username}"
-                />
-                <input
-                  type="text"
-                  class="form-control mb-3"
-                  id="isActive"
-                  readonly
-                  disabled
-                  name="isActive"
-                  th:value="${user.isActive}"
-                />
-                <select
-                  name="role"
-                  class="form-select mb-3"
-                  readonly
-                  disabled
-                  id="role"
-                  required
-                >
-                  <option value="">--Select--</option>
-                  <option value="admin" th:selected="${user.role == 'admin'}">
-                    Admin
-                  </option>
-                  <option
-                    value="cashier"
-                    th:selected="${user.role == 'cashier'}"
-                  >
-                    Cashier
-                  </option>
-                </select>
-                <p class="text-danger mb-2">
-                  Do you really want to delete this user?
-                </p>
-                <div class="buttons">
-                  <a
-                    href="/account/users"
-                    class="btn btn-primary mb-4"
-                    type="button"
-                    >Back to List</a
-                  >
-                  <button
-                    class="btn btn-danger mb-4"
-                    type="button"
-                    id="deleteBtn"
-                  >
-                    Delete
-                  </button>
+        <section class="panel important">
+            <div class="row my-5">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="form">
+                        <form class="register-form" method="post" action="#" th:action="@{/account/user/delete/{username}}" id="form">
+                            <h1>Delete</h1>
+                            <input type="text" class="form-control mb-3" id="id" readonly disabled name="id" th:value="${user.id}" />
+                            <input type="text" class="form-control mb-3" id="username" readonly disabled name="username" th:value="${user.username}" />
+                            <input type="text" class="form-control mb-3" id="isActive" readonly disabled name="isActive" th:value="${user.isActive}" />
+                            <select name="role" class="form-select mb-3" readonly disabled id="role" required>
+                                <option value="">--Select--</option>
+                                <option value="admin" th:selected="${user.role == 'admin'}">
+                                    Admin
+                                </option>
+                                <option value="cashier" th:selected="${user.role == 'cashier'}">
+                                    Cashier
+                                </option>
+                            </select>
+                            <p class="text-danger mb-2">
+                                Do you really want to delete this user?
+                            </p>
+                            <div class="buttons">
+                                <a href="/account/users" class="btn btn-primary mb-4" type="button">Back to List</a>
+                                <button class="btn btn-danger mb-4" type="button" id="deleteBtn">
+                                    Delete
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </form>
+                <div class="col-md-4"></div>
             </div>
-          </div>
-          <div class="col-md-4"></div>
-        </div>
-      </section>
+        </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script th:src="@{/js/main.js}"></script>
     <script>
-      $(document).ready(function () {
-        if (!sessionStorage.getItem("username")) {
-          window.location.href = "/account/login";
-        }
-        $("#greeting").text(
-          "Welcome back! " + sessionStorage.getItem("username")
-        );
-
-        $("#deleteBtn").click(function () {
-          $.ajax({
-            type: "POST",
-            url: "/account/user/delete/" + $("#username").val(),
-            success: function (response) {
-              Swal.fire({
-                icon: "success",
-                title: response,
-                showCancelButton: false,
-                confirmButtonText: "Ok",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.href = "/account/users";
-                }
-              });
-            },
-            error: function (xhr, status, error) {
-              Swal.fire({
-                icon: "error",
-                title: xhr.responseText,
-                showCancelButton: false,
-                confirmButtonText: "Close",
-              });
-            },
-          });
+        $(document).ready(function () {
+            $("#deleteBtn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/account/user/delete/" + $("#username").val(),
+                    success: function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: response,
+                            showCancelButton: false,
+                            confirmButtonText: "Ok",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/account/users";
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: xhr.responseText,
+                            showCancelButton: false,
+                            confirmButtonText: "Close",
+                        });
+                    },
+                });
+            });
         });
-      });
     </script>
-  </body>
+</body>
+
 </html>
