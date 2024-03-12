@@ -51,8 +51,8 @@
                             </select>
                             <div class="buttons">
                                 <a href="/account/users" class="btn btn-primary mb-4" type="button">Back to List</a>
-                                <button class="btn btn-danger mb-4" type="submit">
-                                    Delete
+                                <button class="btn btn-success mb-4" type="submit">
+                                    Create
                                 </button>
                             </div>
                         </form>
@@ -91,7 +91,7 @@
                             confirmButtonText: "Ok",
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = "/account/login";
+                                window.location.href = "/account/users";
                             }
                         });
                     },

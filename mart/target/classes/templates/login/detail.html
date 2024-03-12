@@ -42,9 +42,17 @@
                     <div class="form">
                         <form class="register-form" method="post" action="#" th:action="@{/account/create}" id="form">
                             <h1>Detail</h1>
-                            <input type="text" class="form-control mb-3" id="username" readonly disabled name="username" th:value="${user.id}" />
+                            <input type="text" class="form-control mb-3" id="id" readonly disabled name="username" th:value="${user.id}" />
                             <input type="text" class="form-control mb-3" id="username" readonly disabled name="username" th:value="${user.username}" />
-                            <input type="text" class="form-control mb-3" id="username" readonly disabled name="username" th:value="${user.isActive}" />
+                            <select name="isActive" class="form-select mb-3" id="isActive" required>
+                                <option value="">--Select--</option>
+                                <option value="1" th:selected="${user.isActive == 1}">
+                                    Active
+                                </option>
+                                <option value="0" th:selected="${user.isActive == 0}">
+                                    Inactive
+                                </option>
+                            </select>
                             <select name="role" disabled readonly class="form-select mb-3" id="role" required>
                                 <option value="">--Select--</option>
                                 <option value="admin" th:selected="${user.role == 'admin'}">
