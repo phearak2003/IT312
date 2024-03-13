@@ -94,6 +94,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script th:src="@{/js/main.js}"></script>
     <script>
+              $(document).ready(function () {
+        let role = sessionStorage.getItem("role");
+        if (role != "admin") {
+          window.location.href = "/product/soldproduct";
+        }
+      });
         $("#form").submit(function (e) {
             e.preventDefault();
             var form = $(this);
