@@ -66,6 +66,15 @@
               >
                 <h2 class="fw-medium mb-4">Detail product</h2>
                 <!-- Form content -->
+                <div class="row justify-content-center mb-3">
+                  <div class="col-md-6 text-center">
+                    <img
+                      th:src="@{'/images/product/' + ${products.get().imagePath}}"
+                      class="img-fluid"
+                      alt="Product Image"
+                    />
+                  </div>
+                </div>
                 <div class="mb-3 row">
                   <label for="name" class="col-sm-4 col-form-label"
                     >Product Name</label

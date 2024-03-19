@@ -128,6 +128,28 @@
                 </div>
               </div>
 
+              <!-- Image selector -->
+              <div class="mb-3 row">
+                <label for="image" class="col-sm-4 col-form-label"
+                  >Product Image:</label
+                >
+                <div class="col-sm-8">
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    name="productImage"
+                    accept="image/*"
+                  />
+                  <img
+                    id="imagePreview"
+                    src=""
+                    alt="Image Preview"
+                    style="max-width: 100%; margin-top: 10px; display: none"
+                  />
+                </div>
+              </div>
+
               <div class="col-md-12">
                 <div class="buttons">
                   <button id="discard" type="button" class="btn btn-danger">
@@ -151,6 +173,20 @@
     <script th:src="@{/js/main.js}"></script>
     <script>
       $(document).ready(function () {
+        // Image preview
+        $("#image").change(function () {
+          var input = this;
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              $("#imagePreview").attr("src", e.target.result).show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+          }
+        });
+
         let role = sessionStorage.getItem("role");
         if (role != "admin") {
           window.location.href = "/product/soldproduct";
@@ -175,19 +211,28 @@
           event.preventDefault();
           var form = $(this);
           var url = form.attr("action");
-          var jsonData = {};
 
-          jsonData.productName = $("#name").val();
-          jsonData.quantity = $("#qty").val();
-          jsonData.unitPrice = $("#up").val();
-          jsonData.inputter = sessionStorage.getItem("username");
-          jsonData.barcodeNumber = $("#barcodeNumber").val();
+          // Create a FormData object to hold form data and files
+          var formData = new FormData();
 
+          // Add JSON data to FormData
+          formData.append("productName", $("#name").val());
+          formData.append("quantity", $("#qty").val());
+          formData.append("unitPrice", $("#up").val());
+          formData.append("inputter", sessionStorage.getItem("username"));
+          formData.append("barcodeNumber", $("#barcodeNumber").val());
+
+          // Add the selected image file to FormData
+          formData.append("file", $("#image")[0].files[0]);
+
+          // Send AJAX request with FormData
           $.ajax({
             type: "POST",
             url: url,
-            contentType: "application/json",
-            data: JSON.stringify(jsonData),
+            processData: false, // Prevent jQuery from automatically processing the data
+            contentType: false, // Prevent jQuery from automatically setting contentType
+            cache: false, // Prevent caching of the request
+            data: formData,
             success: function (response) {
               Swal.fire({
                 icon: "success",

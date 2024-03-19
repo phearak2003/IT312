@@ -39,4 +39,8 @@ public class Product implements Serializable {
 
     @Column(name = "stock_date")
     String stockDate;
+
+    @Column(name = "image_path") 
+    String imagePath;
+
 }

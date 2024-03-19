@@ -90,6 +90,7 @@
           <table class="table table-hover text-center">
             <thead class="table table-dark">
               <td>ID</td>
+              <td>Image</td>
               <td>Product Name</td>
               <td>Quantity</td>
               <td>Unit Price</td>
@@ -101,6 +102,13 @@
             <tbody id="productTableBody">
               <tr th:each="product : ${products}">
                 <td th:text="${product.id}" />
+                <td>
+                  <img
+                    th:src="@{'/images/product/' + ${product.imagePath}}"
+                    alt="Product Image"
+                    style="max-width: 100px; max-height: 100px"
+                  />
+                </td>
                 <td class="productName" th:text="${product.productName}" />
                 <td th:text="${product.quantity}" />
                 <td th:text="${product.unitPrice}" />

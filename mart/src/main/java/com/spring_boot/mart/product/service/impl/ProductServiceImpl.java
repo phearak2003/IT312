@@ -1,5 +1,8 @@
 package com.spring_boot.mart.product.service.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,10 +13,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring_boot.mart.product.entity.Product;
 import com.spring_boot.mart.product.repository.ProductRepository;
 import com.spring_boot.mart.product.service.ProductService;
+import org.springframework.beans.factory.annotation.Value;
+import java.nio.file.Path;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -58,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseEntity<String> update(Long id, Product updatedProduct) {
+    public ResponseEntity<String> update(Long id, Product updatedProduct, MultipartFile productImage) {
         try {
             Optional<Product> optionalProduct = productRepository.findById(id);
             if (optionalProduct.isPresent()) {
@@ -71,6 +77,19 @@ public class ProductServiceImpl implements ProductService {
                 existingProduct.setStockDate(formatter.format(date));
                 existingProduct.setBarcodeNumber(updatedProduct.getBarcodeNumber());
 
+                // Save product image if provided
+                if (productImage != null && !productImage.isEmpty()) {
+                    String uploadDir = "C:/IT312/mart/src/main/resources/static/images/product/";
+                    String fileName = existingProduct.getId() + "_" + existingProduct.getProductName().replace(" ", "_")
+                            + "_"
+                            + productImage.getOriginalFilename();
+                    byte[] bytes = productImage.getBytes();
+                    Path path = Paths.get(uploadDir + fileName);
+                    Files.write(path, bytes);
+
+                    existingProduct.setImagePath(fileName);
+                }
+
                 productRepository.save(existingProduct);
 
                 return ResponseEntity.ok("Product has been updated successfully.");
@@ -82,16 +101,52 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    // @Override
+    // public ResponseEntity<String> save(Product product) {
+    // try {
+    // SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    // Date date = new Date();
+
+    // product.setStockDate(formatter.format(date));
+    // productRepository.save(product);
+    // return ResponseEntity.ok("Product has been added successfully.");
+    // } catch (Exception e) {
+    // return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+    // }
+    // }
+
     @Override
-    public ResponseEntity<String> save(Product product) {
+    public ResponseEntity<String> save(Product product, MultipartFile productImage) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date date = new Date();
 
+            // Set stock date
             product.setStockDate(formatter.format(date));
-            productRepository.save(product);
+
+            // Save product
+            Product savedProduct = productRepository.save(product);
+
+            // Save product image if provided
+            if (productImage != null && !productImage.isEmpty()) {
+                String uploadDir = "C:/IT312/mart/src/main/resources/static/images/product/";
+                String fileName = savedProduct.getId() + "_" + savedProduct.getProductName().replace(" ", "_") + "_"
+                        + productImage.getOriginalFilename();
+                byte[] bytes = productImage.getBytes();
+                Path path = Paths.get(uploadDir + fileName);
+                Files.write(path, bytes);
+
+                savedProduct.setImagePath(fileName);
+                System.out.println(savedProduct);
+                productRepository.save(savedProduct);
+            }
+
             return ResponseEntity.ok("Product has been added successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while saving image.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }

@@ -92,7 +92,7 @@
                 <td th:text="${payment.quantity * payment.unitPrice}"></td>
                 <td>
                   <a
-                    th:href="@{'/product/soldproduct/detail/' + ${payment.id}}"
+                    th:href="@{'/product/payment/recipe/' + ${payment.paymentId}}"
                     class="btn btn-sm btn-success"
                     ><i class="fa fa-eye"></i
                   ></a>

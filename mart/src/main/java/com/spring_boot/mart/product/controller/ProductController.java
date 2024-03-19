@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring_boot.mart.product.entity.Payment;
 import com.spring_boot.mart.product.entity.Product;
@@ -37,7 +40,7 @@ public class ProductController {
     public String payment() {
         return "payment/index";
     }
-    
+
     @GetMapping("/payment/test")
     public String testpayment() {
         return "payment/test";
@@ -77,7 +80,7 @@ public class ProductController {
         model.addAttribute("payments", payments);
         return "payment/soldproduct";
     }
-    
+
     @GetMapping("/payment/recipe/{paymentid}")
     public String soldProductsRecipe(@PathVariable String paymentid, Model model) {
         List<Payment> payments = paymentRepository.getRecipe(paymentid);
@@ -106,8 +109,9 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveProduct(@RequestBody Product product) {
-        return productService.save(product);
+    public ResponseEntity<?> saveProduct(@ModelAttribute Product product,
+            @RequestParam("file") MultipartFile file) {
+        return productService.save(product, file);
     }
 
     @GetMapping("/update/{id}")
@@ -118,8 +122,11 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
-        return productService.update(id, updatedProduct);
+    public ResponseEntity<String> updateProduct(@PathVariable Long id,
+            @ModelAttribute Product updatedProduct, 
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+        ResponseEntity<String> response = productService.update(id, updatedProduct, file);
+        return response;
     }
 
     @GetMapping("/delete/{id}")

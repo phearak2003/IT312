@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring_boot.mart.product.entity.Product;
 
@@ -15,9 +16,10 @@ public interface ProductService {
 
     ResponseEntity<?> all();
 
-    ResponseEntity<String> update(@PathVariable Long id, @RequestBody Product updatedProduct);
+    ResponseEntity<String> update(@PathVariable Long id, @RequestBody Product updatedProduct,
+            MultipartFile productImage);
 
-    ResponseEntity<String> save(@RequestBody Product product);
+    ResponseEntity<String> save(@RequestBody Product product, MultipartFile productImage);
 
     ResponseEntity<?> delete(@PathVariable Long id);
 
