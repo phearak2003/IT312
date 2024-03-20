@@ -16,6 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT product_name FROM tbl_product ", nativeQuery = true)
     List<Object[]> getAll();
 
+    @Query(value = "SELECT COUNT(*) FROM tbl_product ", nativeQuery = true)
+    Long productCount();
+
     @Query(value = "SELECT unit_price FROM tbl_product WHERE product_name = :product ", nativeQuery = true)
     List<Object[]> getPrice(@Param("product") String product);
 

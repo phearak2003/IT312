@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring_boot.mart.product.entity.Payment;
 import com.spring_boot.mart.product.entity.Product;
+import com.spring_boot.mart.product.entity.Dashboard;
 import com.spring_boot.mart.product.repository.ProductRepository;
 import com.spring_boot.mart.product.repository.PaymentRepository;
 import com.spring_boot.mart.product.service.PaymentService;
@@ -74,6 +75,17 @@ public class ProductController {
         return "product/index";
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        Dashboard dashboards = new Dashboard();
+        dashboards.setPaymentThisMonth(paymentRepository.paymentThisMonth());
+        dashboards.setPaymentToday(paymentRepository.paymentToday());
+        dashboards.setProductCount(productRepository.productCount());
+        dashboards.setTotal(paymentRepository.totalThisMonth());
+        model.addAttribute("dashboards", dashboards);
+        return "product/dashboard";
+    }
+
     @GetMapping("/soldproduct")
     public String allSoldProducts(Model model) {
         List<Payment> payments = paymentRepository.findAllByOrderByDateDesc();
@@ -123,7 +135,7 @@ public class ProductController {
 
     @PostMapping("/update/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Long id,
-            @ModelAttribute Product updatedProduct, 
+            @ModelAttribute Product updatedProduct,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         ResponseEntity<String> response = productService.update(id, updatedProduct, file);
         return response;
