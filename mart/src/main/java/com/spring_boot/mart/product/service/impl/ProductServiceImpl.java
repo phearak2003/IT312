@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring_boot.mart.product.entity.Product;
 import com.spring_boot.mart.product.repository.ProductRepository;
 import com.spring_boot.mart.product.service.ProductService;
-import org.springframework.beans.factory.annotation.Value;
 import java.nio.file.Path;
 
 @Service
@@ -100,20 +99,6 @@ public class ProductServiceImpl implements ProductService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    // @Override
-    // public ResponseEntity<String> save(Product product) {
-    // try {
-    // SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    // Date date = new Date();
-
-    // product.setStockDate(formatter.format(date));
-    // productRepository.save(product);
-    // return ResponseEntity.ok("Product has been added successfully.");
-    // } catch (Exception e) {
-    // return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-    // }
-    // }
 
     @Override
     public ResponseEntity<String> save(Product product, MultipartFile productImage) {
