@@ -90,20 +90,56 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+
         $("#checkout").on("click", function () {
             var dataArray = [];
 
-            $('.item-in-cart').each(function () {
-                var dataId = $(this).data('id');
-                var quantity = $(this).find('.quantity').val();
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
 
-                var item = {
-                    dataId: dataId,
-                    quantity: quantity
-                };
+                    $('.item-in-cart').each(function () {
+                        var dataId = $(this).data('id');
+                        var quantity = $(this).find('.quantity').val();
+                        var productId = $(this).find('.productId').val();
+                        // sessionStorage.getItem("customerId")
+                        var item = {
+                            id: dataId,
+                            cartId: "aa",
+                            quantity: quantity,
+                            productId: 22,
+                            customerId: 1,
+                            latitute: latitude,
+                            longtitute: longitude,
+                            isDelivery: 0,
+                            date: new Date(),
+                            isCheckout: 0
+                        };
 
-                dataArray.push(item);
-            });
+                        dataArray.push(item);
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:8888/online/checkout",
+                        contentType: "application/json",
+                        data: JSON.stringify(dataArray),
+                        success: function () {
+                            
+                        },
+                        error: function () {
+                            
+                        }
+                    });
+                }, function (error) {
+                    // Handle geolocation error
+                    console.log("Geolocation error:", error);
+                });
+            } else {
+                alert('Your browser does not support location data retrieval.');
+                return;
+            }
         });
 
         let products = [];
