@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.spring_boot.mart.product.dto.ListProductDto;
 import com.spring_boot.mart.product.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    @SuppressWarnings("null")
     Optional<Product> findById(Long id);
 
     Optional<Product> findByproductName(String product_name);
@@ -28,4 +30,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT product_name,unit_price FROM tbl_product WHERE barcode = :barcode  ", nativeQuery = true)
     List<Object[]> getProductWithBarCode(@Param("barcode") String barcode);
 
+    @Query(nativeQuery = true, value = "SELECT id AS Id, image_path AS Image, product_name AS Name, unit_price AS Up FROM tbl_product ")
+    List<ListProductDto> listProducts();
 }

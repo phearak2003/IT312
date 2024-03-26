@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.spring_boot.mart.product.entity.Payment;
 
-
 @Service
 public interface PaymentService {
     List<Payment> findAll();

@@ -42,5 +42,4 @@ public class Product implements Serializable {
 
     @Column(name = "image_path") 
     String imagePath;
-
 }
