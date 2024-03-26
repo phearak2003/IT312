@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ import java.nio.file.Path;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepository productRepository;
+    @Value("${upload.dir}")
+    private String uploadDir;
 
     @Override
     public List<Product> findAll() {
@@ -78,13 +81,21 @@ public class ProductServiceImpl implements ProductService {
 
                 // Save product image if provided
                 if (productImage != null && !productImage.isEmpty()) {
-                    String uploadDir = "C:/IT312/mart/src/main/resources/static/images/product/";
                     String fileName = existingProduct.getId() + "_" + existingProduct.getProductName().replace(" ", "_")
                             + "_"
                             + productImage.getOriginalFilename();
+
+                    // Constructing the upload directory relative to the project directory
+                    Path projectDirectory = Paths.get("").toAbsolutePath();
+                    Path uploadPath = Paths.get(projectDirectory.toString(), uploadDir);
+                    Path filePath = Paths.get(uploadPath.toString(), fileName);
+
+                    // Ensure the directories exist, create them if necessary
+                    Files.createDirectories(uploadPath);
+
+                    // Write the file to the constructed path
                     byte[] bytes = productImage.getBytes();
-                    Path path = Paths.get(uploadDir + fileName);
-                    Files.write(path, bytes);
+                    Files.write(filePath, bytes);
 
                     existingProduct.setImagePath(fileName);
                 }
@@ -114,18 +125,25 @@ public class ProductServiceImpl implements ProductService {
 
             // Save product image if provided
             if (productImage != null && !productImage.isEmpty()) {
-                String uploadDir = "C:/IT312/mart/src/main/resources/static/images/product/";
                 String fileName = savedProduct.getId() + "_" + savedProduct.getProductName().replace(" ", "_") + "_"
                         + productImage.getOriginalFilename();
                 byte[] bytes = productImage.getBytes();
-                Path path = Paths.get(uploadDir + fileName);
-                Files.write(path, bytes);
+
+                // Constructing the upload directory relative to the project directory
+                Path projectDirectory = Paths.get("").toAbsolutePath();
+                Path uploadPath = Paths.get(projectDirectory.toString(), uploadDir);
+                Path filePath = Paths.get(uploadPath.toString(), fileName);
+
+                // Ensure the directories exist, create them if necessary
+                Files.createDirectories(uploadPath);
+
+                // Write the file to the constructed path
+                Files.write(filePath, bytes);
 
                 savedProduct.setImagePath(fileName);
                 System.out.println(savedProduct);
                 productRepository.save(savedProduct);
             }
-
             return ResponseEntity.ok("Product has been added successfully.");
         } catch (IOException e) {
             e.printStackTrace();
