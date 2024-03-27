@@ -1,13 +1,3 @@
-/**
-* Template Name: Yummy
-* Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
-/**
- * Preloader
- */
 const preloader = document.querySelector('#preloader');
 if (preloader) {
   window.addEventListener('load', () => {
@@ -15,9 +5,7 @@ if (preloader) {
   });
 }
 
-/**
- * Sticky header on scroll
- */
+
 const selectHeader = document.querySelector('#header');
 if (selectHeader) {
   document.addEventListener('scroll', () => {
@@ -25,9 +13,7 @@ if (selectHeader) {
   });
 }
 
-/**
- * Navbar links active state on scroll
- */
+
 let navbarlinks = document.querySelectorAll('#navbar a');
 
 function navbarlinksActive() {
@@ -50,9 +36,6 @@ function navbarlinksActive() {
 window.addEventListener('load', navbarlinksActive);
 document.addEventListener('scroll', navbarlinksActive);
 
-/**
- * Mobile nav toggle
- */
 const mobileNavShow = document.querySelector('.mobile-nav-show');
 const mobileNavHide = document.querySelector('.mobile-nav-hide');
 
