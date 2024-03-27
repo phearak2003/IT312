@@ -71,10 +71,10 @@ public class OnlineController {
     public ResponseEntity<?> validation(@RequestBody Customer customer, HttpSession session) {
         Customer validation = customerRepository.findByCustomerNameAndPassword(customer.getCustomerName(),
                 customer.getPassword());
-                System.out.println(validation.getIsActive());
+        System.out.println(validation.getIsActive());
         if (validation != null) {
 
-                return ResponseEntity.ok(validation.getId());
+            return ResponseEntity.ok(validation.getId());
 
         }
         return ResponseEntity.badRequest().body("Invalid username or password");
