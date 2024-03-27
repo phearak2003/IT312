@@ -573,6 +573,13 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script>
+        let user = sessionStorage.getItem("username");
+        console.log(user);
+        if(user == undefined){
+            window.location.href = "/online/login"
+        }
+    </script>
 
 </body>
 

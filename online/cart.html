@@ -113,6 +113,11 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        let user = sessionStorage.getItem("username");
+        console.log(user);
+        if(user == undefined){
+            window.location.href = "/online/login"
+        }
       function generateRandomString(length) {
         var characters =
           "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -144,12 +149,12 @@
                 var quantity = $(this).find(".quantity").val();
                 var productId = $(this).data("id");
 
-                // sessionStorage.getItem("customerId")
+                let cusid = sessionStorage.getItem("customerId")
                 var item = {
                   cartId: cartId,
                   quantity: quantity,
                   productId: productId,
-                  customerId: 1,
+                  customerId: cusid,
                   latitute: latitude,
                   longtitute: longitude,
                   isDelivery: isDelivery,

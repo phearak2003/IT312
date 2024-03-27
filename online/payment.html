@@ -673,6 +673,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/imask/3.4.0/imask.min.js"></script>
     <script>
       window.onload = function () {
+        let user = sessionStorage.getItem("username");
+        console.log(user);
+        if(user == undefined){
+            window.location.href = "/online/login"
+        }
         const urlParams = new URLSearchParams(window.location.search);
         const cartId = urlParams.get("data");
         console.log(cartId);
