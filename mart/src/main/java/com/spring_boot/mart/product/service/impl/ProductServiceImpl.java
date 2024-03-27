@@ -27,6 +27,8 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
     @Value("${upload.dir}")
     private String uploadDir;
+    @Value("${upload.dir_foronline}")
+    private String uploadDir_online;
 
     @Override
     public List<Product> findAll() {
@@ -87,15 +89,20 @@ public class ProductServiceImpl implements ProductService {
 
                     // Constructing the upload directory relative to the project directory
                     Path projectDirectory = Paths.get("").toAbsolutePath();
-                    Path uploadPath = Paths.get(projectDirectory.toString(), uploadDir);
-                    Path filePath = Paths.get(uploadPath.toString(), fileName);
+
+                    Path uploadPath1 = Paths.get(projectDirectory.toString(), uploadDir);
+                    Path uploadPath2 = Paths.get(projectDirectory.toString(), uploadDir_online);
+                    Path filePath1 = Paths.get(uploadPath1.toString(), fileName);
+                    Path filePath2 = Paths.get(uploadPath2.toString(), fileName);
 
                     // Ensure the directories exist, create them if necessary
-                    Files.createDirectories(uploadPath);
+                    Files.createDirectories(uploadPath1);
+                    Files.createDirectories(uploadPath2);
 
                     // Write the file to the constructed path
                     byte[] bytes = productImage.getBytes();
-                    Files.write(filePath, bytes);
+                    Files.write(filePath1, bytes);
+                    Files.write(filePath2, bytes);
 
                     existingProduct.setImagePath(fileName);
                 }
@@ -131,17 +138,20 @@ public class ProductServiceImpl implements ProductService {
 
                 // Constructing the upload directory relative to the project directory
                 Path projectDirectory = Paths.get("").toAbsolutePath();
-                Path uploadPath = Paths.get(projectDirectory.toString(), uploadDir);
-                Path filePath = Paths.get(uploadPath.toString(), fileName);
+
+                Path uploadPath1 = Paths.get(projectDirectory.toString(), uploadDir);
+                Path uploadPath2 = Paths.get(projectDirectory.toString(), uploadDir_online);
+                Path filePath1 = Paths.get(uploadPath1.toString(), fileName);
+                Path filePath2 = Paths.get(uploadPath2.toString(), fileName);
 
                 // Ensure the directories exist, create them if necessary
-                Files.createDirectories(uploadPath);
+                Files.createDirectories(uploadPath1);
+                Files.createDirectories(uploadPath2);
 
-                // Write the file to the constructed path
-                Files.write(filePath, bytes);
+                Files.write(filePath1, bytes);
+                Files.write(filePath2, bytes);
 
                 savedProduct.setImagePath(fileName);
-                System.out.println(savedProduct);
                 productRepository.save(savedProduct);
             }
             return ResponseEntity.ok("Product has been added successfully.");
