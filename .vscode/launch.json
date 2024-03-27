@@ -1,14 +1,16 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-MartApplication<mart>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.spring_boot.mart.MartApplication",
-            "projectName": "mart",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        }
-    ]
+
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-MartApplication<mart>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.spring_boot.mart.MartApplication",
+      "projectName": "mart",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
 }
+

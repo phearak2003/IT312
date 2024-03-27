@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<head>
+    <title>Login Page</title>
+    <link href="assets/css/login.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://minimart.com.bd/wp-content/uploads/2023/05/325409173_837305520898040_171445792183026749_n.jpg" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-page">
+            <div class="form">
+                <form class="register-form" method="post" action="#"  id="form">
+                    <h1>Login</h1>
+                    <input type="text" placeholder="Username" id="username" required />
+                    <input type="password" placeholder="Password" id="password" required />
+                    <button type="submit">Login</button>
+                    <a href="/online/register.html">Register</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function () {
+            $('#form').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+              
+                var jsonData = {};
+
+                jsonData.customerName = $('#username').val();
+                jsonData.password = $('#password').val();
+                jsonData.isActive = 1;
+                jsonData.createdDate = new Date();
+
+                $.ajax({
+                    type: 'POST',
+                    url: "http://localhost:8888/online/customer/login" ,
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonData),
+                    success: function (response) {
+                        sessionStorage.setItem("username", jsonData.customerName);
+                        sessionStorage.setItem("customerId", response);
+                        Swal.fire({
+                            icon: "success",
+                            title: "Login successfully!",
+                            showCancelButton: false,
+                            confirmButtonText: "Ok"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "/online/index.html";
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: xhr.responseText,
+                            showCancelButton: false,
+                            confirmButtonText: "Close"
+                        })
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

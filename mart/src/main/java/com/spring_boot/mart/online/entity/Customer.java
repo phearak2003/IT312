@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "tbl_customer")
+@Table(name = "tbl_customer_new")
 public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
