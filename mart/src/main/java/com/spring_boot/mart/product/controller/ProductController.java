@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring_boot.mart.product.entity.Product;
+import com.spring_boot.mart.online.entity.Cart;
+import com.spring_boot.mart.online.repository.CartRepository;
 import com.spring_boot.mart.product.entity.Dashboard;
 import com.spring_boot.mart.product.entity.Payment;
 import com.spring_boot.mart.product.repository.ProductRepository;
@@ -36,6 +38,9 @@ public class ProductController {
     PaymentRepository paymentRepository;
     @Autowired
     PaymentService paymentService;
+    @Autowired
+    CartRepository cartRepository;
+    
 
     @GetMapping("/payment")
     public String payment() {
@@ -52,6 +57,13 @@ public class ProductController {
         return "payment/invoice";
     }
 
+    @GetMapping("/Online_Booking")
+    public String OnlineBooking(Model model) {
+        List<Cart> carts = cartRepository.findAll();
+        model.addAttribute("carts", carts);
+        System.out.println(carts.get(0));
+        return "cart/index";
+    }
     @PostMapping("/payment/save")
     public ResponseEntity<?> savePayment(@RequestBody List<Payment> products) {
         try {
