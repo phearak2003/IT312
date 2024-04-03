@@ -40,7 +40,6 @@ public class ProductController {
     PaymentService paymentService;
     @Autowired
     CartRepository cartRepository;
-    
 
     @GetMapping("/payment")
     public String payment() {
@@ -64,6 +63,7 @@ public class ProductController {
         System.out.println(carts.get(0));
         return "cart/index";
     }
+
     @PostMapping("/payment/save")
     public ResponseEntity<?> savePayment(@RequestBody List<Payment> products) {
         try {
@@ -93,7 +93,13 @@ public class ProductController {
         dashboards.setPaymentThisMonth(paymentRepository.paymentThisMonth());
         dashboards.setPaymentToday(paymentRepository.paymentToday());
         dashboards.setProductCount(productRepository.productCount());
-        dashboards.setTotal(paymentRepository.totalThisMonth());
+        if (paymentRepository.totalThisMonth() == null) {
+            dashboards.setTotal(0f);
+        } else {
+            dashboards.setTotal(paymentRepository.totalThisMonth());
+        }
+
+        System.out.println(dashboards);
         model.addAttribute("dashboards", dashboards);
         return "product/dashboard";
     }
