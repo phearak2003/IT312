@@ -167,12 +167,74 @@
         </div>
       </section>
     </main>
-
+    <div id="scanner" style="position: absolute; right: 20%; top: 0%"></div>
+    <script src="https://kendo.cdn.telerik.com/2023.3.1114/js/kendo.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
     <script th:src="@{/js/main.js}"></script>
     <script>
       $(document).ready(function () {
+        let scanning = false; // Flag to track scanning status
+        let lastScanTime = 0; // Timestamp of the last scan
+        $("#closeCamera").on("click", function () {
+          $(this).hide();
+          $("#scanner").hide();
+          $("#scanButton").show();
+          Quagga.stop();
+        });
+        $("#button-bc").on("click", function () {
+          if (scanning) return; // If scanning is already in progress, do nothing
+          $("#scanner").show();
+          scanning = true; // Set scanning flag to true
+
+          Quagga.init(
+            {
+              inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.querySelector("#scanner"), // Use the div element as the target
+                constraints: {
+                  facingMode: "environment", // Use the rear camera of the device
+                },
+              },
+              decoder: {
+                readers: ["ean_reader"], // Specify barcode types to decode (EAN)
+              },
+            },
+            function (err) {
+              if (err) {
+                console.error(err);
+                alert("Error initializing Quagga.");
+                scanning = false; // Reset scanning flag
+                return;
+              }
+              console.log("Quagga initialized successfully.");
+              Quagga.start(); // Start scanning
+
+              // Set width and height of the video element
+              const videoElement = document.querySelector("#scanner video");
+              videoElement.width = 360; // Set your desired width
+              videoElement.height = 180; // Set your desired height
+            }
+          );
+
+          // Add listener for scan event
+          Quagga.onDetected(function (result) {
+            let currentTime = new Date().getTime();
+            if (currentTime - lastScanTime < 2000) return; // If less than 0.5 second has passed since the last scan, ignore
+            lastScanTime = currentTime; // Update last scan time
+            let barcode = result.codeResult.code;
+            var audio = new Audio("../../sound/barcode.wav"); // Replace with the path to your sound file
+            audio.play();
+            console.log("Scanned barcode:", barcode);
+            $("#barcodeNumber").val(barcode);
+            $("#scanner").hide();
+            Quagga.stop();
+            scanning = false;
+          });
+        });
+
         // Image preview
         $("#image").change(function () {
           var input = this;
